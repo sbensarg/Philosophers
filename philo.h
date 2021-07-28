@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chicky <chicky@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 14:35:02 by chicky            #+#    #+#             */
-/*   Updated: 2021/07/27 18:13:40 by chicky           ###   ########.fr       */
+/*   Updated: 2021/07/28 17:39:16 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ typedef struct  s_philo
     int time_to_sleep;
     int nbr_times_philo_eat;
 	int	last_meal;
-	int	philo;
+	int idofphilo;
 	pthread_mutex_t lock;
 }              t_philo;
 
 int	ft_atoi(const char *str);
 
 
-int counter;
+
 
 
 

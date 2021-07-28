@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chicky <chicky@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/27 14:49:54 by chicky            #+#    #+#             */
-/*   Updated: 2021/07/27 18:14:44 by chicky           ###   ########.fr       */
+/*   Updated: 2021/07/28 20:23:04 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,34 @@ t_philo  init_data(int argc, char **argv)
         data.last_meal = 0;
         if (argc > 5)
             data.nbr_times_philo_eat = ft_atoi(argv[5]);
+		data.idofphilo = 0;
     }
     return (data);
 }
 
+long long current_timestamp()
+{
+	struct		timeval te; 
+	long long	milliseconds;
+
+	gettimeofday(&te, NULL);
+	milliseconds = (te.tv_sec) * 1000 + (te.tv_usec) / 1000;
+	return milliseconds;
+}
+
 void* trythis(void *data)
 {   
-    t_philo *philo;
-    int philonum;
-    philo = (t_philo *)data;
-    struct timeval current_time;
-    philonum = philo->philo;
-   
-    gettimeofday(&current_time, NULL);
+	t_philo *philo;
+	long long cur_time;
+	philo = (t_philo *)data;
+	cur_time = current_timestamp();
  
     pthread_mutex_lock(&philo->lock);
-    printf("id = %d;\n", philonum);
+	philo->idofphilo++;
+	
+    printf("%lld %d  has taken a fork\n",  cur_time, philo->idofphilo);
+	
+	
     // if (philo->time_to_die || philo->last_meal == 0)
     //     printf("%d %ld died\n", philo->nbr_of_philos,  current_time.tv_usec);
     
@@ -66,8 +78,8 @@ int main(int argc, char **argv)
         return 1;
     }
   
-    while (i < data.nbr_of_philos) {
-        data.philo = i;
+    while (i < data.nbr_of_philos)
+	{
         error = pthread_create(&(tid[i]),
                                NULL,
                                &trythis, &data);
@@ -76,12 +88,12 @@ int main(int argc, char **argv)
                 strerror(error));
         i++;
     }
+	i = 0;
     while (i < data.nbr_of_philos)
     {
        pthread_join(tid[i], NULL); 
        i++; 
     }
-  
     pthread_mutex_destroy(&data.lock);
   
     return 0;
