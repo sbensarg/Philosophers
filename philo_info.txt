@@ -1,0 +1,6 @@
+param de programme:
+
+- 200 the program not accept more than 200 philosophers.
+- the program dosn't accept under than 60 ms
+- test 1 800 200 200 : the philo should not eat and should die because the program dosn't accept under than 2 philosophers.
+- test 5 800 200 200 : no one should die because time to die bigger than time to eat and time to sleep
