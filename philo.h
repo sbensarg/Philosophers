@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chicky <chicky@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/27 14:35:02 by chicky            #+#    #+#             */
-/*   Updated: 2021/08/07 15:44:19 by chicky           ###   ########.fr       */
+/*   Created: 2021/11/11 19:42:42 by sbensarg          #+#    #+#             */
+/*   Updated: 2021/11/11 19:56:27 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 #define PHILO_H
 
-
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/time.h>
+# include <pthread.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
+# include <sys/time.h>
 
 #define HUNGRY 0
 #define EATING 1
@@ -27,47 +26,31 @@
 #define THINKING 3
 #define DIED 4
 
-typedef struct  s_common_data
+typedef struct	s_common_data
 {
-    int nbr_of_philos;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int nbr_times_philo_eat;
-}              t_common_data;
+    int				nbr_of_philos;
+    int				time_to_die;
+    int				time_to_eat;
+    int				time_to_sleep;
+    int				nbr_times_philo_eat;
+	pthread_mutex_t	*init_forks;
+	pthread_mutex_t	print;
+	int				count_eat;
+  	pthread_mutex_t	num_of_meals;
+	int				*state;
+	pthread_mutex_t	m_state;
+}					t_common_data;
 
-typedef struct s_philo
+typedef struct	s_philo
 {
-    int idofphilo;
-    int left_philo;
-    int right_philo;
-    int	last_meal;
-    int right_fork;
-    int left_fork;
-    int prog_start;
-    int *state;
-    pthread_mutex_t *init_forks;
-    pthread_mutex_t m_state;
-    pthread_mutex_t print;
-    pthread_mutex_t num_of_meals;
-    //pthread_mutex_t lock;
-    t_common_data *philo;
-}              t_philo;
-
-typedef struct s_mutex
-{
-    pthread_mutex_t *init_forks;
-    pthread_mutex_t state;
-    pthread_mutex_t print;
-    pthread_mutex_t num_of_meals;
-}              t_mutex;
+	t_common_data	*data;
+    int				idofphilo;
+	pthread_t		thread_id;
+    int				last_meal;
+    int				prog_start;
+}					t_philo;
 
 
 int	ft_atoi(const char *str);
-
-
-
-
-
 
 #endif
