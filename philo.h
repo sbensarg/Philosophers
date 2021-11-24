@@ -6,7 +6,7 @@
 /*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:42:42 by sbensarg          #+#    #+#             */
-/*   Updated: 2021/11/11 19:56:27 by sbensarg         ###   ########.fr       */
+/*   Updated: 2021/11/12 20:03:32 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,22 @@
 # include <unistd.h>
 # include <sys/time.h>
 
-#define HUNGRY 0
-#define EATING 1
-#define SLEEPING 2
-#define THINKING 3
-#define DIED 4
-
-typedef struct	s_common_data
+typedef struct	s_philo
 {
-    int				nbr_of_philos;
+    int				idofphilo;
+	pthread_t		*threads;
+    int				last_meal;
+    int				prog_start;
+	int				nbr_of_philos;
     int				time_to_die;
     int				time_to_eat;
     int				time_to_sleep;
     int				nbr_times_philo_eat;
-	pthread_mutex_t	*init_forks;
+	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 	int				count_eat;
   	pthread_mutex_t	num_of_meals;
-	int				*state;
-	pthread_mutex_t	m_state;
-}					t_common_data;
-
-typedef struct	s_philo
-{
-	t_common_data	*data;
-    int				idofphilo;
-	pthread_t		thread_id;
-    int				last_meal;
-    int				prog_start;
+	long long		cur_time;
 }					t_philo;
 
 
