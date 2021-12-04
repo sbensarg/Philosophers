@@ -6,7 +6,7 @@
 /*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:42:29 by sbensarg          #+#    #+#             */
-/*   Updated: 2021/11/12 20:18:27 by sbensarg         ###   ########.fr       */
+/*   Updated: 2021/12/04 04:20:30 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void ft_pickup(t_philo *philo)
 	
 }
 
-void* trythis(void *data)
+void*	trythis(void *data)
 {   
 	t_philo *philo;
 	
@@ -102,7 +102,7 @@ int	main(int argc, char **argv)
 		philo->idofphilo = i;
         error = pthread_create(&(philo->threads[i]),
                                NULL,
-                               &trythis, &philo);
+                               &trythis, philo);
         if (error != 0)
             printf("\nThread can't be created :[%s]",
                 strerror(error));
