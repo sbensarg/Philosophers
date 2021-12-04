@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+         #
+#    By: chicky <chicky@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/11 19:43:47 by sbensarg          #+#    #+#              #
-#    Updated: 2021/11/11 22:04:16 by sbensarg         ###   ########.fr        #
+#    Updated: 2021/12/04 17:23:50 by chicky           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CC = gcc
 all : $(NAME)
 
 $(NAME) : $(SRCS)
-	@$(CC) $(FLAGS) $(SRCS) -o $(NAME)
+	@$(CC) $(FLAGS) $(SRCS) -pthread -o $(NAME)
 
 clean :
 
