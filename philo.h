@@ -6,7 +6,7 @@
 /*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:42:42 by sbensarg          #+#    #+#             */
-/*   Updated: 2021/12/05 21:18:20 by sbensarg         ###   ########.fr       */
+/*   Updated: 2021/12/07 20:16:04 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,15 @@ typedef struct	s_philo
 	int				*count_eat;
   	pthread_mutex_t	num_of_meals;
 	pthread_mutex_t	check;
+	int				death;
 }					t_philo;
 
 typedef struct	s_local_data
 {
     int				id;
 	int				count;
+	long long		last_eat;
+	//int				death;
 }					t_local_data;
 
 int	ft_atoi(const char *str);

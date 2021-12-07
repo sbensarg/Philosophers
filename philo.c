@@ -6,7 +6,7 @@
 /*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:42:29 by sbensarg          #+#    #+#             */
-/*   Updated: 2021/12/05 21:16:20 by sbensarg         ###   ########.fr       */
+/*   Updated: 2021/12/07 20:46:57 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ long long	current_timestamp(void)
 	gettimeofday(&te, NULL);
 	milliseconds = (te.tv_sec) * 1000 + (te.tv_usec) / 1000;
 	return milliseconds;
+}
+
+void	mysleep(long long time)
+{
+	long long	cur_time;
+
+	cur_time = current_timestamp();
+	usleep((time * 1000) * 0.8);
+	while (current_timestamp() - cur_time < time)
+		continue ;
 }
 
 t_philo	*init_data(int argc, char **argv)
@@ -80,14 +90,20 @@ void	ft_pickup_and_eat(t_local_data *ldata, t_philo *philo)
 	right = (ldata->id + 1) % philo->nbr_of_philos;
 	pthread_mutex_lock(&philo->forks[left]);
 	pthread_mutex_lock(&philo->forks[right]);
+	if (current_timestamp() - ldata->last_eat >= philo->time_to_die)
+	{
+		pthread_mutex_lock(&philo->print);
+		printf("%lld ms philosopher %d died\n", (current_timestamp() - philo->prog_start), ldata->id + 1);
+		philo->death = 1;
+	}
     ft_print_state(ldata, philo, ANSI_COLOR_YELLOW "has taken a fork"  ANSI_COLOR_RESET);
 	ft_print_state(ldata, philo, ANSI_COLOR_GREEN "is eating" ANSI_COLOR_RESET);
 	pthread_mutex_lock(&philo->num_of_meals);
 	ldata->count++;
 	philo->count_eat[ldata->id] = ldata->count;
 	pthread_mutex_unlock(&philo->num_of_meals);
-	usleep(philo->time_to_eat * 1000);
-	philo->last_meal = current_timestamp();
+	ldata->last_eat = current_timestamp();
+	mysleep(philo->time_to_eat);
 	pthread_mutex_unlock(&philo->forks[left]);
 	pthread_mutex_unlock(&philo->forks[right]);
 }
@@ -95,7 +111,7 @@ void	ft_pickup_and_eat(t_local_data *ldata, t_philo *philo)
 void	ft_sleep_and_think(t_local_data *ldata, t_philo *philo)
 {
 	ft_print_state(ldata, philo, ANSI_COLOR_BLUE "is sleeping" ANSI_COLOR_RESET);
-	usleep(philo->time_to_sleep * 1000);
+	mysleep(philo->time_to_sleep);
 	ft_print_state(ldata, philo, ANSI_COLOR_MAGENTA "is thinking" ANSI_COLOR_RESET);
 }
 
@@ -103,15 +119,20 @@ void*	trythis(void *data)
 {   
 	t_philo *philo;
 	t_local_data *var;
+	long long	cur_time;
 
+	cur_time = current_timestamp();
 	philo = (t_philo *)data;
 	var = malloc(sizeof(t_local_data));
-	philo->last_meal = philo->prog_start;
+	philo->last_meal =current_timestamp();
 	var->id = philo->idofphilo;
 	var->count = 0;
+	var->last_eat = current_timestamp();
 	while (1)
 	{
-		usleep(100);
+		if (philo->death == 1)
+			break ;
+		usleep(10);
 		ft_pickup_and_eat(var, philo);
 		ft_sleep_and_think(var, philo);
 	}
@@ -139,12 +160,16 @@ int	main(int argc, char **argv)
 		if (error != 0)
 		printf("\nthread can't be created :[%s]",
 		strerror(error));
-		usleep(100);
+		usleep(10);
 		i++;
 	}
 	i = 0;
 	while (1)
 	{
+		i = 0;
+		var = 0;
+		if (philo->death == 1)
+			break ;
 		while(i < philo->nbr_of_philos)
 		{
 			if (philo->count_eat[i] == philo->nbr_times_philo_eat)
@@ -155,10 +180,8 @@ int	main(int argc, char **argv)
 		}
 		if (var == philo->nbr_of_philos)
 			break ;
-		i = 0;
-		var = 0;
-
 	}
+	
 	// i = 0;
     // while (i < philo->nbr_of_philos)
     // {
