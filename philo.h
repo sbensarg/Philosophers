@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chicky <chicky@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 19:42:42 by sbensarg          #+#    #+#             */
-/*   Updated: 2021/12/07 20:16:04 by sbensarg         ###   ########.fr       */
+/*   Updated: 2021/12/08 20:01:51 by chicky           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct	s_philo
 {
 	int				idofphilo;
 	pthread_t		*threads;
-    long long		last_meal;
+    long long		*last_meal;
     long			prog_start;
 	int				nbr_of_philos;
     int				time_to_die;
@@ -43,7 +43,6 @@ typedef struct	s_philo
 	pthread_mutex_t	print;
 	int				*count_eat;
   	pthread_mutex_t	num_of_meals;
-	pthread_mutex_t	check;
 	int				death;
 }					t_philo;
 
@@ -52,9 +51,11 @@ typedef struct	s_local_data
     int				id;
 	int				count;
 	long long		last_eat;
-	//int				death;
 }					t_local_data;
 
-int	ft_atoi(const char *str);
+int			ft_atoi(const char *str);
+long long	current_timestamp(void);
+void		mysleep(long long time);
+void	ft_print_state(t_local_data *ldata, t_philo *philo, char *str);
 
 #endif
