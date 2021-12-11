@@ -6,7 +6,7 @@
 /*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:50:36 by chicky            #+#    #+#             */
-/*   Updated: 2021/12/10 01:17:59 by sbensarg         ###   ########.fr       */
+/*   Updated: 2021/12/11 16:18:47 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,26 +69,20 @@ void	ft_print_state(t_local_data *ldata, t_philo *philo, char *str)
 	pthread_mutex_unlock(&philo->print);
 }
 
-int	init_args(t_philo *data, int argc, char **argv)
+void	free_all(t_philo *philo)
 {
-	data->nbr_times_philo_eat = -1;
-	data->nbr_of_philos = ft_atoi(argv[1]);
-	if (data->nbr_of_philos > 200 || data->nbr_of_philos <= 0)
-		return (1);
-	data->time_to_die = ft_atoi(argv[2]);
-	if (data->time_to_die < 60)
-		return (1);
-	data->time_to_eat = ft_atoi(argv[3]);
-	if (data->time_to_eat < 60)
-		return (1);
-	data->time_to_sleep = ft_atoi(argv[4]);
-	if (data->time_to_sleep < 60)
-		return (1);
-	if (argc > 5)
+	int	i;
+
+	i = 0;
+	while (i < philo->nbr_of_philos)
 	{
-		data->nbr_times_philo_eat = ft_atoi(argv[5]);
-		if (data->nbr_times_philo_eat < 0)
-			return (1);
+		pthread_mutex_destroy(&philo->forks[i]);
+		i++;
 	}
-	return (0);
+	pthread_mutex_destroy(&philo->print);
+	free(philo->forks);
+	free(philo->threads);
+	free(philo->count_eat);
+	free(philo->last_meal);
+	free(philo);
 }
