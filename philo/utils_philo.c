@@ -6,7 +6,7 @@
 /*   By: sbensarg <sbensarg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:50:36 by chicky            #+#    #+#             */
-/*   Updated: 2021/12/11 16:18:47 by sbensarg         ###   ########.fr       */
+/*   Updated: 2021/12/11 18:41:09 by sbensarg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ void	ft_print_state(t_local_data *ldata, t_philo *philo, char *str)
 
 	cur_time = current_timestamp();
 	pthread_mutex_lock(&philo->print);
-	printf("%lld ms philosopher %d %s\n",
-		(cur_time - philo->prog_start), ldata->id + 1, str);
+	printf("%lld ms philosopher %d %s\n", cur_time, ldata->id + 1, str);
 	pthread_mutex_unlock(&philo->print);
 }
 
@@ -73,6 +72,12 @@ void	free_all(t_philo *philo)
 {
 	int	i;
 
+	i = 0;
+	while (i < philo->nbr_of_philos)
+	{
+		pthread_detach(philo->threads[i]);
+		i++;
+	}
 	i = 0;
 	while (i < philo->nbr_of_philos)
 	{
